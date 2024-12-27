@@ -7,9 +7,9 @@ const getCtx = (id) => {
     return { cvs, ctx }
 }
 
-// aspect-ratio: 9/20
-const width = 360
-const height = 800
+// aspect-ratio: 9/16
+const width = 720
+const height = 1280
 
 const container = document.getElementById("canvas-container")
 

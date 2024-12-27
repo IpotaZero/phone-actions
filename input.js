@@ -30,8 +30,7 @@ const InputHandler = class {
         this.touch = {
             touches: [],
             justTouches: [],
-            rotation: 0,
-            scale: 0,
+            circle: 0,
         }
 
         // Focus state
@@ -76,6 +75,18 @@ const InputHandler = class {
         this.container.addEventListener("touchmove", this.#handleTouchMove.bind(this))
         this.container.addEventListener("touchstart", this.#handleTouchStart.bind(this))
         this.container.addEventListener("touchend", this.#handleTouchEnd.bind(this))
+
+        // 検出器の初期化
+        const detector = new CircleGestureDetector(container, {
+            minRadius: 30, // より小さい円を許容
+            requiredDegrees: 270, // 完全な円でなくても許容
+            timeThreshold: 3000, // より長い時間を許容
+        })
+
+        // ジェスチャー検出時のイベントリスナー
+        container.addEventListener("circlegesture", (e) => {
+            this.touch.circle = e.detail.clockwise ? -1 : 1
+        })
 
         // Window focus events
         window.addEventListener("blur", this.#handleBlur.bind(this))
@@ -274,6 +285,7 @@ const InputHandler = class {
         this.mouse.moved = false
 
         this.touch.justTouches = []
+        this.touch.circle = 0
 
         this.focusState.justFocused = false
         this.focusState.justBlurred = false
@@ -292,4 +304,4 @@ const InputHandler = class {
 
 const inputHandler = new InputHandler(container)
 
-const { keyboard, mouse, touch } = inputHandler
+const { keyboard, mouse, touch, orientation } = inputHandler
