@@ -27,6 +27,7 @@ const InputHandler = class {
             deltaY: 0,
         }
 
+        // Touch state
         this.touch = {
             touches: [],
             justTouches: [],
@@ -78,7 +79,7 @@ const InputHandler = class {
 
         // 検出器の初期化
         const detector = new CircleGestureDetector(container, {
-            minRadius: 30, // より小さい円を許容
+            minRadius: 10, // より小さい円を許容
             requiredDegrees: 270, // 完全な円でなくても許容
             timeThreshold: 3000, // より長い時間を許容
         })
@@ -196,6 +197,8 @@ const InputHandler = class {
     #handleTouchStart(e) {
         this.#handleTouchMove(e)
 
+        this.mouse.clicked = true
+
         const rect = e.target.getBoundingClientRect()
         const center = vec(rect.width / 2, rect.height / 2)
 
@@ -229,12 +232,14 @@ const InputHandler = class {
         const cvsCenter = vec(cvsWidth, cvsHeight).mlt(1 / 2)
 
         ;[...e.changedTouches].forEach((t) => {
+            this.mouse.p = vec(t.clientX - rect.x, t.clientY - rect.y)
+                .sub(center)
+                .rot(-this.mouse.angle)
+                .add(cvsCenter)
+                .mlt(width / cvsWidth)
+
             this.touch.touches[t.identifier] = {
-                p: vec(t.clientX - rect.x, t.clientY - rect.y)
-                    .sub(center)
-                    .rot(-this.mouse.angle)
-                    .add(cvsCenter)
-                    .mlt(width / cvsWidth),
+                p: this.mouse.p,
             }
         })
     }

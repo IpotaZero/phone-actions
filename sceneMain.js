@@ -5,6 +5,8 @@ const sceneMain = new (class {
         this.t = tricks()
         this.next()
         this.darkenEnd = true
+
+        this.effects = []
     }
 
     next() {
@@ -22,6 +24,20 @@ const sceneMain = new (class {
         Itext(ctxMain, "azure", "anzu", 64, width / 2, height / 2 + 32, this.trick.text, {
             text_align: "center",
         })
+
+        touch.touches.forEach((t) => {
+            this.effects.push({
+                life: 12,
+                p: t.p,
+            })
+        })
+
+        this.effects.forEach((e) => {
+            Iarc(ctxMain, "#f0ffff80", e.p.x, e.p.y, e.life * 4)
+            e.life--
+        })
+
+        this.effects = this.effects.filter((e) => e.life > 0)
 
         if (this.darkenEnd) {
             if (this.trick.loop()) {
@@ -64,7 +80,7 @@ const tricks = function* () {
     }
 
     yield {
-        text: "時計回り",
+        text: "うずまき(時計回り)",
         loop: () => {
             if (touch.circle == -1) {
                 return true
@@ -73,7 +89,7 @@ const tricks = function* () {
     }
 
     yield {
-        text: "反時計回り",
+        text: "うずまき(反時計回り)",
         loop: () => {
             if (touch.circle == 1) {
                 return true
@@ -85,6 +101,40 @@ const tricks = function* () {
         text: "左に傾ける",
         loop: () => {
             if (300 < orientation.alpha && orientation.alpha < 360) return true
+
+            if (orientation.alpha == 0 && orientation.beta == 0 && orientation.gamma == 0) {
+                Itext(
+                    ctxMain,
+                    "azure",
+                    "anzu",
+                    48,
+                    width / 2,
+                    height / 2 + 200,
+                    "たぶんジャイロセンサーが;入ってないにゃ",
+                    {
+                        text_align: "center",
+                    },
+                )
+
+                const { clicked } = Ibutton(
+                    ctxMain,
+                    "azure",
+                    "sans-serif",
+                    48,
+                    width / 2 - 100,
+                    height / 2 + 500,
+                    200,
+                    50,
+                    "すすむ",
+                    {
+                        text_align: "center",
+                    },
+                )
+
+                if (clicked) {
+                    return true
+                }
+            }
         },
     }
 
@@ -92,25 +142,84 @@ const tricks = function* () {
         text: "奥に傾ける",
         loop: () => {
             if (-45 < orientation.beta && orientation.beta < 0) return true
-            Itext(
-                ctxMain,
-                "azure",
-                "anzu",
-                24,
-                width / 2,
-                height / 2 + 100,
-                `
-                    ${orientation.alpha};
-                    ${orientation.beta};
-                    ${orientation.gamma};
-                    ${acceleration.x};
-                    ${acceleration.y};
-                    ${acceleration.z};
-                `.replaceAll(" ", ""),
-                {
-                    text_align: "center",
-                },
-            )
+
+            if (orientation.alpha == 0 && orientation.beta == 0 && orientation.gamma == 0) {
+                Itext(
+                    ctxMain,
+                    "azure",
+                    "anzu",
+                    48,
+                    width / 2,
+                    height / 2 + 200,
+                    "たぶんジャイロセンサーが;入ってないにゃ",
+                    {
+                        text_align: "center",
+                    },
+                )
+
+                const { clicked } = Ibutton(
+                    ctxMain,
+                    "azure",
+                    "sans-serif",
+                    48,
+                    width / 2 - 100,
+                    height / 2 + 500,
+                    200,
+                    50,
+                    "すすむ",
+                    {
+                        text_align: "center",
+                    },
+                )
+
+                if (clicked) {
+                    return true
+                }
+            }
+        },
+    }
+
+    yield {
+        text: "振る",
+        loop: () => {
+            if (acceleration.x ** 2 + acceleration.y ** 2 + acceleration.z ** 2 > 20) {
+                console.log("sdsdfd")
+                return true
+            }
+
+            if (acceleration.x == 0 && acceleration.y == 0 && acceleration.z == 0) {
+                Itext(
+                    ctxMain,
+                    "azure",
+                    "anzu",
+                    48,
+                    width / 2,
+                    height / 2 + 200,
+                    "たぶん加速度センサーが;入ってないにゃ",
+                    {
+                        text_align: "center",
+                    },
+                )
+
+                const { clicked } = Ibutton(
+                    ctxMain,
+                    "azure",
+                    "sans-serif",
+                    48,
+                    width / 2 - 100,
+                    height / 2 + 500,
+                    200,
+                    50,
+                    "すすむ",
+                    {
+                        text_align: "center",
+                    },
+                )
+
+                if (clicked) {
+                    return true
+                }
+            }
         },
     }
 }

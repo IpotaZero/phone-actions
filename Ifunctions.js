@@ -243,7 +243,7 @@ const Ibutton = (
     }
 
     if (x <= P.x && P.x <= x + width && y <= P.y && P.y <= y + height) {
-        cvsSub.style.cursor = "pointer"
+        container.style.cursor = "pointer"
         result.hovered = true
 
         if (clicking ? mouse.clicking : mouse.clicked) {
