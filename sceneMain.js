@@ -84,6 +84,14 @@ const tricks = function* () {
     yield {
         text: "左に傾ける",
         loop: () => {
+            if (300 < orientation.alpha && orientation.alpha < 360) return true
+        },
+    }
+
+    yield {
+        text: "奥に傾ける",
+        loop: () => {
+            if (-45 < orientation.beta && orientation.beta < 0) return true
             Itext(
                 ctxMain,
                 "azure",
@@ -94,8 +102,11 @@ const tricks = function* () {
                 `
                     ${orientation.alpha};
                     ${orientation.beta};
-                    ${orientation.gamma}
-                `,
+                    ${orientation.gamma};
+                    ${acceleration.x};
+                    ${acceleration.y};
+                    ${acceleration.z};
+                `.replaceAll(" ", ""),
                 {
                     text_align: "center",
                 },

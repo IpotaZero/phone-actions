@@ -304,4 +304,4 @@ const InputHandler = class {
 
 const inputHandler = new InputHandler(container)
 
-const { keyboard, mouse, touch, orientation } = inputHandler
+const { keyboard, mouse, touch, orientation, acceleration } = inputHandler
