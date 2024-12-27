@@ -88,13 +88,13 @@ const tricks = function* () {
                 ctxMain,
                 "azure",
                 "anzu",
-                64,
+                24,
                 width / 2,
-                height / 2 + 32,
+                height / 2 + 100,
                 `
-                    ${orientation.alpha},
-                    ${orientation.beta},
-                    ${orientation.gamma},
+                    ${orientation.alpha};
+                    ${orientation.beta};
+                    ${orientation.gamma}
                 `,
                 {
                     text_align: "center",
