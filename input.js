@@ -96,7 +96,7 @@ const InputHandler = class {
 
         window.addEventListener("deviceorientation", this.#handleOrientation.bind(this))
 
-        window.addEventListener("devicemotion", this.#handleAcceleration.bind(this))
+        window.addEventListener("devicemotion", this.#handleAcceleration.bind(this), true)
     }
 
     #handleKeyDown(e) {
@@ -269,7 +269,7 @@ const InputHandler = class {
     }
 
     #handleAcceleration(e) {
-        this.acceleration = e.acceleration
+        this.acceleration = e.accelerationIncludingGravity
         this.rotationRate = e.rotationRate
     }
 
